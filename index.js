@@ -11,8 +11,13 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL || `postgresql://${process.env.DB_USER || 'todo_user'}:${process.env.DB_PASSWORD || 'todo_password'}@${process.env.DB_HOST || '103.47.226.243'}:${process.env.DB_PORT || 5432}/${process.env.DB_NAME || 'todoapp'}`,
 });
 
-// Middleware
-app.use(cors());
+// CORS - allow Vercel frontend
+const corsOptions = {
+  origin: ['https://todo-list-web.vercel.app', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type']
+}
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Health check
